@@ -25,18 +25,15 @@ void AMovingPlatform::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	MovePlatform(DeltaTime);
-	
+	RotatePlatform(DeltaTime);
 
 }
 
 void AMovingPlatform::MovePlatform(float DeltaTime)
 {
-	FVector Location = GetActorLocation();
+	
 
-	Location = Location + (PlatformVelocity * DeltaTime);
-	SetActorLocation(Location);
-
-	DistanceMoved = FVector::Dist(StartLocation, Location);
+	DistanceMoved = GetDistanceMoved();
 
 	if (DistanceMoved > MaxMoveDistance)
 	{
@@ -48,13 +45,28 @@ void AMovingPlatform::MovePlatform(float DeltaTime)
 
 		PlatformVelocity = -PlatformVelocity;
 	}
+	else
+	{
+		FVector Location = GetActorLocation();
+
+		Location = Location + (PlatformVelocity * DeltaTime);
+		SetActorLocation(Location);
+	}
+	
+
 }
 
 void AMovingPlatform::RotatePlatform(float DeltaTime)
 {
-	FRotator Rotation = GetActorRotation();
+	FRotator RotationToAdd = RotationVelocity * DeltaTime;
+	AddActorLocalRotation(RotationToAdd);
 
-	Rotation = Rotation + (PlatformRotationSpeed * DeltaTime);
-	SetActorRotation(Rotation);
+	
+}
+
+float AMovingPlatform::GetDistanceMoved()
+{
+	DistanceMoved = FVector::Dist(StartLocation, GetActorLocation());
+	return DistanceMoved;
 }
 

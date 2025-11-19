@@ -30,7 +30,7 @@ public:
 	FVector StartLocation;
 	
 	UPROPERTY(EditAnywhere)
-	FRotator PlatformRotationSpeed = FRotator(0.f,0.f,0.f);
+	FRotator RotationVelocity;
 
 
 protected:
@@ -43,5 +43,7 @@ public:
 
 	void MovePlatform(float DeltaTime);
 	void RotatePlatform(float DeltaTime);
+
+	float GetDistanceMoved();
 
 };
